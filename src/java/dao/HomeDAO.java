@@ -23,6 +23,7 @@ public class HomeDAO {
         db = new DBContext();
     }
 
+    // get top 5 recent articles by time desc
     public List<Article> getTop5RecentArticles() throws Exception {
         Connection con = null;
         PreparedStatement ps = null;
@@ -36,9 +37,9 @@ public class HomeDAO {
             rs = ps.executeQuery();
             //add each article record in result set to list
             while (rs.next()) {
-                String imgPath = db.getImgDir() + rs.getString(3);
-                top5List.add(new Article(rs.getInt(1), rs.getString(2), imgPath,
-                        rs.getString(4), rs.getDate(5), rs.getString(6)));
+                String imgPath = db.getImgDir() + rs.getString("image");
+                top5List.add(new Article(rs.getInt("id"), rs.getString("title"), imgPath,
+                        rs.getString("content"), rs.getDate("date"), rs.getString("author")));
             }
             return top5List;
         } catch (Exception e) {
@@ -60,9 +61,9 @@ public class HomeDAO {
             ps.setInt(1, id);
             rs = ps.executeQuery();
             if (rs.next()) {
-                String imgPath = db.getImgDir() + rs.getString(3);
-                return new Article(rs.getInt(1), rs.getString(2), imgPath,
-                        rs.getString(4), rs.getDate(5), rs.getString(6));
+                String imgPath = db.getImgDir() + rs.getString("image");
+                return new Article(rs.getInt("id"), rs.getString("title"), imgPath,
+                        rs.getString("content"), rs.getDate("date"), rs.getString("author"));
             }
             return null;
         } catch (Exception e) {

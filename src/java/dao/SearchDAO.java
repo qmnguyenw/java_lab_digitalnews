@@ -25,6 +25,7 @@ public class SearchDAO {
         numberArticleInPage = 3;
     }
 
+    //get search list item by page number
     public List<Article> getSearchListByPageNumber(int currentPage, String keyword) throws Exception {
         Connection con = null;
         PreparedStatement ps = null;
@@ -33,6 +34,7 @@ public class SearchDAO {
         try {
             con = db.getConnection();
             List<Article> searchList = new ArrayList<>();
+            //get row number of all item but between item start and item end of current page
             String query = "SELECT * FROM (\n"
                     + "  SELECT ROW_NUMBER()\n"
                     + "  OVER(ORDER BY [date] desc) as RowNumber,\n"
@@ -50,9 +52,9 @@ public class SearchDAO {
 
             rs = ps.executeQuery();
             while (rs.next()) {
-                String imgPath = db.getImgDir() + rs.getString(4);
-                searchList.add(new Article(rs.getInt(2), rs.getString(3), imgPath,
-                        rs.getString(5), rs.getDate(6), rs.getString(7)));
+                String imgPath = db.getImgDir() + rs.getString("image");
+                searchList.add(new Article(rs.getInt("id"), rs.getString("title"), imgPath,
+                        rs.getString("content"), rs.getDate("date"), rs.getString("author")));
             }
             return searchList;
         } catch (Exception e) {
@@ -62,12 +64,14 @@ public class SearchDAO {
         }
     }
 
+    // get number of search page 
     public int getNumberOfPage(String keyword) throws Exception {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
             con = db.getConnection();
+            //get number of article
             String query = "SELECT COUNT(*) FROM Article\n"
                     + "	WHERE [content] LIKE ?\n"
                     + "	OR [title] LIKE ?";
@@ -76,6 +80,7 @@ public class SearchDAO {
             ps.setString(2, "%"+keyword+"%");
             
             rs = ps.executeQuery();
+            //get number search page by number of article in page
             if (rs.next()) {
                 //return number of page
                 return (int)Math.ceil(rs.getDouble(1)/numberArticleInPage);
