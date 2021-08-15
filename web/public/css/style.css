@@ -81,7 +81,7 @@ body {
 }
 
 .search-box {
-  width: 100px;
+  width: 110px;
   border-style: dotted;
   border-color: gray;
 }
@@ -89,6 +89,7 @@ body {
 .submit-bt {
   border: none;
   background: none;
+  cursor: pointer;
 }
 
 .recent-5-articles {
