@@ -28,9 +28,9 @@ public class HomeDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
+        List<Article> top5List = new ArrayList<>();
         try {
             con = db.getConnection();
-            List<Article> top5List = new ArrayList<>();
             String query = "SELECT TOP 5 * FROM [Article] order by [date] desc";
 
             ps = con.prepareStatement(query);
@@ -41,12 +41,12 @@ public class HomeDAO {
                 top5List.add(new Article(rs.getInt("id"), rs.getString("title"), imgPath,
                         rs.getString("content"), rs.getDate("date"), rs.getString("author")));
             }
-            return top5List;
         } catch (Exception e) {
             throw e;
         } finally {
             db.closeConnection(con, ps, rs);
         }
+        return top5List;
     }
 
     public Article getArticleById(int id) throws Exception {
@@ -55,7 +55,6 @@ public class HomeDAO {
         ResultSet rs = null;
         try {
             con = db.getConnection();
-            List<Article> top5List = new ArrayList<>();
             String query = "SELECT * FROM [Article] WHERE [id] = ?";
             ps = con.prepareStatement(query);
             ps.setInt(1, id);
