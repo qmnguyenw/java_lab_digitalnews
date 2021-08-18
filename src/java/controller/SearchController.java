@@ -22,13 +22,13 @@ import javax.servlet.http.HttpServletResponse;
 public class SearchController extends HttpServlet {
 
     private int[] getPageFromTo(int currentPage, int totalNumOfPage) {
-        int numOfDisplayPage = 3;
+        int numberArticleInPage = 3;
         int pageTo,pageFrom;
         pageFrom = currentPage;
-        pageTo = currentPage + numOfDisplayPage - 1;
+        pageTo = currentPage + numberArticleInPage - 1;
         if (pageTo > totalNumOfPage) {
             pageTo = totalNumOfPage;
-            pageFrom = pageTo - numOfDisplayPage + 1;
+            pageFrom = pageTo - numberArticleInPage + 1;
         }
         if (pageFrom < 1) {
             pageFrom = 1;
